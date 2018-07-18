@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
+import 'colors.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -20,6 +21,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  TextEditingController _usernameController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
   // TODO: Add text editing controllers (101)
   @override
   Widget build(BuildContext context) {
@@ -41,12 +45,77 @@ class _LoginPageState extends State<LoginPage> {
             // TODO: Remove filled: true values (103)
             // TODO: Wrap Password with PrimaryColorOverride (103)
             // TODO: Add TextField widgets (101)
+            PrimaryColorOverride(
+              color: kShrineBrown900,
+              child: TextField(
+                controller: _usernameController,
+                decoration: InputDecoration(
+                  filled: true,
+                  labelText: 'Username'
+                )
+              ),
+            ),
+            SizedBox(height: 12.0),
+            PrimaryColorOverride(
+              color: kShrineBrown900,
+              child: TextField(
+                controller: _passwordController,
+                decoration: InputDecoration(
+                  filled: true,
+                  labelText: 'Password'
+                ),
+                obscureText: true,
+              ),
+            ),
             // TODO: Add button bar (101)
+            _buildButtonBar()
           ],
         ),
       ),
     );
   }
+
+  Widget _buildButtonBar() {
+    return ButtonBar(
+      children: <Widget>[
+        FlatButton(
+          shape: BeveledRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(7.0))
+          ),
+          child: Text('CANCEL'),
+          onPressed: () {
+            _usernameController.clear();
+            _passwordController.clear();
+          },
+        ),
+        RaisedButton(
+          shape: BeveledRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(7.0))
+          ),
+          elevation: 8.0,
+          child: Text('NEXT'),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        )
+      ],
+    );
+  }
 }
 
 // TODO: Add PrimaryColorOverride (103)
+class PrimaryColorOverride extends StatelessWidget {
+  const PrimaryColorOverride({Key key, this.color, this.child})
+      : super(key: key);
+
+  final Color color;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Theme(
+      child: child,
+      data: Theme.of(context).copyWith(primaryColor: color),
+    );
+  }
+}
